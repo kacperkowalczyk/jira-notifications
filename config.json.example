@@ -1,5 +1,6 @@
 {
     "jira_url": "",
     "token": "",
-    "jql": "issuetype = Incident AND status = New AND assignee in (EMPTY)"
+    "jql": "issuetype = Incident AND status = New AND assignee in (EMPTY)",
+    "interval": 5
 }
