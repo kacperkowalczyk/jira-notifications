@@ -1,0 +1,5 @@
+{
+    "jira_url": "",
+    "token": "",
+    "jql": "issuetype = Incident AND status = New AND assignee in (EMPTY)"
+}

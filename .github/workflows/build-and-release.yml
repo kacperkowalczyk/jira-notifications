@@ -1,0 +1,54 @@
+name: Build and Publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.21.6
+
+      - name: Build for Windows
+        run: GOOS=windows GOARCH=amd64 go build -o jira-notifications.exe
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Binary Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./jira-notifications.exe
+          asset_name: jira-notifications.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Config Asset
+        id: upload-release-asset-config 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./config.json.example
+          asset_name: config.json.example
