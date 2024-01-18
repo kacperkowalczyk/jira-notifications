@@ -1,4 +1,4 @@
-# jira-notifications
+# windows-jira-notifications
 
 Jira notifications will periodically query Jira and if any Jira issues are found matching the JQL a Windows notification/toast will be created.
 Example usage includes monitoring queues for high-priority tickets that are not yet assigned.
